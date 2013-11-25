@@ -72,5 +72,25 @@ cfdisk_LDADD += $(NCURSES_LIBS)
 endif
 endif # BUILD_CFDISK
 
+
+if BUILD_CFDISK
+sbin_PROGRAMS += cfdisk2
+cfdisk2_SOURCES = fdisks/cfdisk2.c
+cfdisk2_CFLAGS = $(AM_CFLAGS) -I$(ul_libfdisk_incdir)
+cfdisk2_LDADD = $(LDADD) libcommon.la libfdisk.la
+
+if BUILD_LIBBLKID
+cfdisk2_CFLAGS += -I$(ul_libblkid_incdir)
+cfdisk2_LDADD += libblkid.la
+endif
+
+if HAVE_SLANG
+cfdisk2_LDADD += -lslang
+else
+cfdisk2_CFLAGS += $(NCURSES_CFLAGS)
+cfdisk2_LDADD += $(NCURSES_LIBS)
+endif
+endif # BUILD_CFDISK
+
 endif # !ARCH_SPARC
 endif # !ARCH_M68K
